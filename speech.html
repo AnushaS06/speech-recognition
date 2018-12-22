@@ -1,0 +1,53 @@
+<style>
+  .speech { width: 280px; padding: 0; margin: 0;position: absolute;left:40%;top:30%}
+  .speech input {border: 0; width: 240px; display: inline-block; height: 40px; background-color:blanchedalmond}
+  .speech img {float: right; width: 40px;background-color:blanchedalmond }
+  #sen{position: absolute; left:39.5%; top:50%;background-color: blanchedalmond}
+</style>
+
+<!-- Search Form -->
+<body bgcolor="#B0C4DE">
+<form id="form" method="get" action="speech.php">
+  <div class="speech">
+      <b>Speak out your sentence<br><br></b>
+    <input type="text" name="q" id="transcript" placeholder="Speak" />
+    <img onclick="startDictation()" src="//i.imgur.com/cHidSVu.gif" />
+    <br><br><b>Select your sentence</b>
+  </div>
+  <select name="sentences" id="sen">
+      <option value="The small birds were singing softly">The small birds were singing softly</option>
+      <option value="The house has but two small second story bedrooms">The house has but two small second story bedrooms</option>
+      <option value="A small plastic bag fell out of the pocket">A small plastic bag fell out of the pocket</option>
+      <option value="In seconds a small script appeared">In seconds a small script appeared</option>
+    </select>
+  
+</form>
+</body>
+<!-- HTML5 Speech Recognition API -->
+<script>
+  function startDictation() {
+
+    if (window.hasOwnProperty('webkitSpeechRecognition')) {
+
+      var recognition = new webkitSpeechRecognition();
+
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.lang = "en-US";
+      recognition.start();
+
+      recognition.onresult = function(e) {
+        document.getElementById('transcript').value
+                                 = e.results[0][0].transcript;
+        recognition.stop();
+        document.getElementById('form').submit();
+      };
+
+      recognition.onerror = function(e) {
+        recognition.stop();
+      }
+
+    }
+  }
+</script>
